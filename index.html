@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List - Login</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 h-screen flex justify-center items-center">
+
+    <div class="bg-white p-8 rounded shadow-md max-w-md w-full">
+        <h1 class="text-2xl font-bold mb-4 text-center">To Do List</h1>
+        <form id="loginForm" class="space-y-4">
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Password:</label>
+                <input type="password" id="password" name="password" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            </div>
+            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        // Add event listener to the form submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            // Get the value entered in the password input
+            var password = document.getElementById('password').value;
+
+            // Check if the entered password is "prince"
+            if (password === 'prince') {
+                // If password is correct, redirect to index.html
+                window.location.href = 'index.html';
+            } else {
+                // If password is incorrect, display an alert message
+                alert('Incorrect password. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>
