@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <h1 class="text-2xl md:text-3xl font-bold mb-4 md:mb-8 text-center">Todo List</h1>
+        <div id="todo-list" class="bg-white p-4 md:p-6 rounded shadow">
+        </div>
+        <div class="mt-4 md:mt-8 text-center">
+            <a href="add.html" class="bg-blue-500 text-white px-4 py-2 rounded">Add New Todo</a>
+        </div>
+    </div>
+
+    <script>
+        fetch('http://localhost:3000/todos')
+            .then(response => response.json())
+            .then(todos => {
+                const todoList = document.getElementById('todo-list');
+                todos.forEach(todo => {
+                    const todoItem = document.createElement('div');
+                    todoItem.className = 'border-b border-gray-200 p-4 md:flex justify-between items-center';
+                    todoItem.innerHTML = `
+                        <div class="mb-4 md:mb-0">
+                            <h3 class="text-xl font-semibold">${todo.title}</h3> <br>
+                            <p>${todo.description}</p>
+                                 <br>  
+                                time created is: ${new Date(todo.createdAt).toLocaleString()}</p>
+                                <p>time updated is: ${new Date(todo.updatedAt).toLocaleString()}</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <a href="update.html?id=${todo._id}" class="bg-yellow-500 text-white px-4 py-2 rounded">Edit</a>
+                            <button onclick="deleteTodo('${todo._id}')" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+                        </div>
+                    `;
+                    todoList.appendChild(todoItem);
+                });
+            });
+
+        function deleteTodo(id) {
+            fetch(`http://localhost:3000/todos/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                location.reload();
+            });
+        }
+    </script>
+</body>
+</html>

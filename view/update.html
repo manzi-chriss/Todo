@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Todo</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold mb-8">Update Todo</h1>
+        <form id="update-todo-form" class="bg-white p-6 rounded shadow">
+            <div class="mb-4">
+                <label class="block text-gray-700">Title</label>
+                <input type="text" id="title" class="w-full p-2 border border-gray-300 rounded" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Description</label>
+                <textarea id="description" class="w-full p-2 border border-gray-300 rounded" required></textarea>
+            </div>
+            <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded">Update Todo</button>
+        </form>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const todoId = urlParams.get('id');
+
+        fetch(`http://localhost:3000/todos/${todoId}`)
+            .then(response => response.json())
+            .then(todo => {
+                document.getElementById('title').value = todo.title;
+                document.getElementById('description').value = todo.description;
+            });
+
+        document.getElementById('update-todo-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+
+            fetch(`http://localhost:3000/todos/${todoId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, description })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Todo updated successfully');
+                window.location.href = 'index.html';
+            })
+            .catch(error => {
+                alert('Error updating todo');
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
